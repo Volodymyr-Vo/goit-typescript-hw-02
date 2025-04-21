@@ -1,10 +1,16 @@
 import ImageCard from "../ImageCard/ImageCard";
+import { Image } from "../types";
 import css from "./ImageGallery.module.css";
 
-export default function ImageGallery({ images, onImageClick }) {
-  if (!images || images.length === 0) {
-    return null;
-  }
+interface ImageGalleryProps {
+  images: Image[];
+  onImageClick: (image: Image) => void;
+}
+
+export const ImageGallery = ({ images, onImageClick }: ImageGalleryProps) => {
+  // if (!images || images.length === 0) {
+  //   return null;
+  // }
 
   return (
     <ul className={css.gallery}>
@@ -15,4 +21,4 @@ export default function ImageGallery({ images, onImageClick }) {
       ))}
     </ul>
   );
-}
+};

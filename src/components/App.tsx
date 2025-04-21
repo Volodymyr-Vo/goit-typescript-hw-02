@@ -1,24 +1,25 @@
 import "./App.css";
 import { Toaster } from "react-hot-toast";
 import SearchBar from "./SearchBar/SearchBar";
-import ImageGallery from "./ImageGallery/ImageGallery";
-import ErrorMessage from "./ErrorMessage/ErrorMessage";
-import ImageModal from "./ImageModal/ImageModal";
-import Loader from "./Loader/Loader";
-import LoadMoreBtn from "./LoadMoreBtn/LoadMoreBtn";
+import { ImageGallery } from "./ImageGallery/ImageGallery";
+import { ErrorMessage } from "./ErrorMessage/ErrorMessage";
+import { ImageModal } from "./ImageModal/ImageModal";
+import { Loader } from "./Loader/Loader";
+import { LoadMoreBtn } from "./LoadMoreBtn/LoadMoreBtn";
 import { fetchImages } from "./Services/Api";
 import { useState } from "react";
+import type { Image } from "./types";
 
 export default function App() {
-  const [images, setImages] = useState([]);
+  const [images, setImages] = useState<Image[]>([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState(null);
-  const [selectedImage, setSelectedImage] = useState(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [query, setQuery] = useState("");
-  const [page, setPage] = useState(1);
+  const [error, setError] = useState<string | null>(null);
+  const [selectedImage, setSelectedImage] = useState<Image | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [query, setQuery] = useState<string>("");
+  const [page, setPage] = useState<number>(1);
 
-  const openModal = (image) => {
+  const openModal = (image: Image) => {
     if (!isModalOpen) {
       setSelectedImage(image);
       setIsModalOpen(true);
@@ -30,16 +31,21 @@ export default function App() {
     setSelectedImage(null);
   };
 
-  const handleSearch = async (newQuery) => {
+  const handleSearch = async (newQuery: string) => {
     setIsLoading(true);
     setError(null);
     setQuery(newQuery);
     setPage(1);
+    setImages([]);
     try {
       const fetchedImages = await fetchImages(newQuery, 1);
       setImages(fetchedImages);
-    } catch (error) {
-      setError(error.message);
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        setError(error.message);
+      } else {
+        setError("Unknown error");
+      }
     } finally {
       setIsLoading(false);
     }
@@ -53,8 +59,12 @@ export default function App() {
       const fetchedImages = await fetchImages(query, nextPage);
       setImages((prevImages) => [...prevImages, ...fetchedImages]);
       setPage(nextPage);
-    } catch (error) {
-      setError(error.message);
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        setError(error.message);
+      } else {
+        setError("Unknown error");
+      }
     } finally {
       setIsLoading(false);
     }

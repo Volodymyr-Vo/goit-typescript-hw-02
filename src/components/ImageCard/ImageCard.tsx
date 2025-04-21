@@ -1,7 +1,13 @@
 import css from "./ImageCard.module.css";
+import { Image } from "../types";
 
-export default function ImageCard({ image, onClick }) {
-  if (!image || !image.urls) return null;
+interface ImageCardProps {
+  image: Image;
+  onClick: (image: Image) => void;
+}
+
+const ImageCard = ({ image, onClick }: ImageCardProps) => {
+  // if (!image || !image.urls) return null;
   return (
     <div className={css.card} onClick={() => onClick(image)}>
       <img
@@ -11,4 +17,6 @@ export default function ImageCard({ image, onClick }) {
       />
     </div>
   );
-}
+};
+
+export default ImageCard;
