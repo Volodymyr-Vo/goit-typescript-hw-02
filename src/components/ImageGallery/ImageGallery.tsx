@@ -8,9 +8,9 @@ interface ImageGalleryProps {
 }
 
 export const ImageGallery = ({ images, onImageClick }: ImageGalleryProps) => {
-  // if (!images || images.length === 0) {
-  //   return null;
-  // }
+  if (!images || images.length === 0) {
+    return null;
+  }
 
   return (
     <ul className={css.gallery}>

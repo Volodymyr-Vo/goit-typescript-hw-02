@@ -7,7 +7,7 @@ interface ImageCardProps {
 }
 
 const ImageCard = ({ image, onClick }: ImageCardProps) => {
-  // if (!image || !image.urls) return null;
+  if (!image || !image.urls) return null;
   return (
     <div className={css.card} onClick={() => onClick(image)}>
       <img
