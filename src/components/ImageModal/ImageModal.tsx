@@ -11,7 +11,7 @@ interface ImageModalProps {
 Modal.setAppElement("#root");
 
 export const ImageModal = ({ image, isOpen, onClose }: ImageModalProps) => {
-  if (!image || !image.urls) return null;
+  if (!image || !image.largeImageURL) return null;
 
   return (
     <Modal
@@ -23,7 +23,7 @@ export const ImageModal = ({ image, isOpen, onClose }: ImageModalProps) => {
       shouldCloseOnOverlayClick={true}
       shouldCloseOnEsc={true}
     >
-      <img src={image.urls.regular} alt={image.alt_description || "Image"} />
+      <img src={image.largeImageURL} alt={image.description || "image"} />
       <button onClick={onClose}>Close</button>
     </Modal>
   );

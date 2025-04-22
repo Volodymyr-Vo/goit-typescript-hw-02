@@ -34,7 +34,7 @@ export const fetchImages = async (
     },
   });
 
-  console.log("Результат з API:", data);
+  // console.log("Результат з API:", data);
 
   return data.results.map((img) => ({
     id: img.id,
