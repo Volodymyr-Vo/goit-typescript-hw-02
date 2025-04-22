@@ -8,6 +8,7 @@ interface ImageGalleryProps {
 }
 
 export const ImageGallery = ({ images, onImageClick }: ImageGalleryProps) => {
+  console.log("ImageGallery images:", images);
   if (!images || images.length === 0) {
     return null;
   }

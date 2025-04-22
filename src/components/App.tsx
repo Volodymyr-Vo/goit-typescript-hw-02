@@ -7,8 +7,9 @@ import { ImageModal } from "./ImageModal/ImageModal";
 import { Loader } from "./Loader/Loader";
 import { LoadMoreBtn } from "./LoadMoreBtn/LoadMoreBtn";
 import { fetchImages } from "./Services/Api";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import type { Image } from "./types";
+import Modal from "react-modal";
 
 export default function App() {
   const [images, setImages] = useState<Image[]>([]);
@@ -18,6 +19,10 @@ export default function App() {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [query, setQuery] = useState<string>("");
   const [page, setPage] = useState<number>(1);
+
+  useEffect(() => {
+    Modal.setAppElement("#root");
+  }, []);
 
   const openModal = (image: Image) => {
     if (!isModalOpen) {
@@ -39,6 +44,12 @@ export default function App() {
     setImages([]);
     try {
       const fetchedImages = await fetchImages(newQuery, 1);
+      console.log("Отримані зображення:", fetchedImages);
+      if (fetchedImages.length === 0) {
+        setError("No images found");
+        return;
+      }
+
       setImages(fetchedImages);
     } catch (error: unknown) {
       if (error instanceof Error) {
@@ -76,7 +87,7 @@ export default function App() {
       {isLoading && <Loader />}
       {error && <ErrorMessage />}
       <ImageGallery images={images} onImageClick={openModal} />
-      {images.length > 0 && !isLoading && (
+      {Array.isArray(images) && images.length > 0 && !isLoading && (
         <div className="load-more-container">
           <LoadMoreBtn onClick={handleLoadMore} />
         </div>
